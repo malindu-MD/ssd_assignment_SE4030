@@ -5,8 +5,10 @@ Secure Software Development (SE4030) | 4th year 1st semester | SLIIT
 
 
 <h3>GitHub link to the original project:</h3>
-Backend-  https://github.com/Kavinduweb/Travel-management-system
-Frontend- https://github.com/Kavinduweb/Travel-management-Frontend
+
+Backend-  https://github.com/Kavinduweb/Travel-management-system 
+
+Frontend- https://github.com/Kavinduweb/Travel-management-Frontend 
 
 <h3>GitHub link to the Modified project:</h3>
 Link-  https://github.com/malindu-MD/ssd_assignment_SE4030

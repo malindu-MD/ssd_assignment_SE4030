@@ -1,0 +1,152 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Form } from "react-bootstrap";
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+
+function AdminAllReply() {
+    const [inquiries, setInquiries] = useState();
+    const [searchkey, setsearchkey] = useState('');
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/inquiry/').then(res => {
+            setInquiries(res.data)
+            console.log(res.data)
+        })
+    }, [])
+
+    const deleteInquiry = (e) => {
+
+        const inquiryId = e.target.id;
+
+        axios.delete(`http://localhost:5000/inquiry/${inquiryId}`).then((res) => {
+            console.log(res.data)
+            alert('Inquiry Deleted Successfully')
+
+            axios.get('http://localhost:5000/inquiry/').then(res => {
+                setInquiries(res.data)
+                console.log(res.data)
+            })
+        })
+    }
+    const filterInquiries = async (e) => {
+        console.log(searchkey)
+        const response = await axios.get(
+            'http://localhost:5000/inquiry/'
+        );
+        const filteredInquiries = response.data.filter((inquiries) =>
+            inquiries.name.toLowerCase().includes(searchkey)
+        );
+        if (filteredInquiries.length > 0) {
+            setInquiries(filteredInquiries);
+        }
+        else {
+            alert("Search Not Found")
+        }
+
+
+    }
+
+    return (
+        <div className="container">
+            <br />
+            <h1>All Responded Client Inquiries</h1>
+            <br />
+            <div >
+                <div className="row mb-2">
+                    <input type="text"
+                        className="form-control col-4 mt-1"
+                        onChange={(e) => { setsearchkey(e.target.value) }}
+                        placeholder="Search Inquiries"
+                        style={{ width: "200px", borderRadius: "10px" }}
+                    />
+
+                    <div className="col-6 col-md-4">
+                        <button className="btn btn-secondary mt-1"
+                            style={{ marginLeft: "1px" }}
+                            onClick={() => filterInquiries(searchkey)}>Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            {inquiries && inquiries.map((inquiry, index) => (
+                <If condition={inquiry.adreply !== "Our team will response to your inquiry soon"}>
+                    <Then>
+                        <div className="formw mb-5" style={{ height: "560px" }}>
+                            <Form>
+                                <div>
+                                    <label htmlFor="name"><b>Name :</b> {inquiry.name}</label>
+                                    <br /><br />
+                                    <label htmlFor="phone"><b>Phone Number : </b> +{inquiry.phone}</label>
+                                    <br /><br />
+                                    <label htmlFor="email"><b>Email :</b> {inquiry.email}</label>
+                                    <br /><br />
+                                    <label htmlFor="inquiry"><b>Inquiry :</b> {inquiry.inq}</label>
+                                    <br /><br />
+                                    <label htmlFor="reply"><b>Status :&nbsp;&nbsp;&nbsp;</b>
+                                        <If condition={inquiry.adreply == "Our team will response to your inquiry soon"}>
+                                            <Then>
+                                                <a>
+                                                    <button className="btn btn-danger btn-sm" type="button"  >
+                                                        <i class="fa fa-times" aria-hidden="true"></i> &nbsp;
+                                                        Haven't Responded
+                                                    </button>
+                                                </a>
+                                            </Then>
+                                            <Else>
+                                                <a>
+                                                    <button className="btn btn-success btn-sm" type="button"  >
+                                                        <i class="fa fa-check" aria-hidden="true"></i> &nbsp;
+                                                        Response Added
+                                                    </button>
+                                                </a>
+                                            </Else>
+                                        </If>
+                                    </label>
+                                    <br /><br />
+                                    <hr />
+
+                                    <Form>
+                                        <div className="form-group" style={{ marginBottom: '15px' }}>
+                                            <div className="hed">
+                                                <i class="fa fa-user" aria-hidden="true"></i> &nbsp;
+                                                <label style={{ marginBottom: '5px' }}> Client({inquiry.name})'s Inquiry </label>
+                                                &nbsp;&nbsp;
+                                            </div>
+
+                                            <p className="bod"> {inquiry.inq}</p>
+                                        </div>
+                                    </Form>
+
+                                    <Form>
+                                        <div className="form-group" style={{ marginBottom: '15px' }}>
+                                            <div className="hed">
+                                                <i class="fa fa-comments" aria-hidden="true"></i> &nbsp;
+                                                <label style={{ marginBottom: '5px' }}> Response From Administration</label>
+                                                &nbsp;&nbsp;
+                                            </div>
+                                            <p className="boadad"> {inquiry.adreply}</p>
+                                            <br />
+                                        </div>
+                                    </Form>
+                                    <div className="row">
+                                        <div className="col">
+                                            <a href={`/editreply/${inquiry._id}`} class="btn btn-warning mx-5" role="button"><i className="fas fa-edit"></i>&nbsp; Edit Response</a>
+                                        </div>
+
+                                        <div className="col">
+                                            <a id={inquiry._id} onClick={(e) => deleteInquiry(e)} className="btn btn-danger"><i className="fas fa-trash-alt"></i>&nbsp; Delete Inquiry</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Form>
+                        </div>
+                    </Then>
+                </If >
+            ))}
+        </div >
+    )
+}
+
+export default AdminAllReply;

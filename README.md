@@ -20,15 +20,19 @@ Link-  https://github.com/malindu-MD/ssd_assignment_SE4030
 
 <h3>Identified Vulnerabilities:</h3>
 
-- 
-- 
-- 
-- 
-- 
--
-- 
--
-- 
+- Security Misconfiguration (Clickjacking) 
+- Broken Authentication & Exposing user sensitive information 
+- Weak Cross-Origin Resource Sharing (CORS) Configurations
+- Stored XSS Vulnerability 
+- File Upload Vulnerability
+- Lack of Request Size Limit function 
+- Missing Content Policy(CSP) Header
+- Insecure Direct Object References (IDOR) 
+- Lack of Rate Limit Function
+- Lack of Rate Limit Function
+- Weak Password Policies
+- Authentication Vulnerability
+- Inadequate Logging mechanism
 
 
 <h3>Security-related open-source testing tools to identify potential vulnerabilities:</h3>

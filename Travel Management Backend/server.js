@@ -8,10 +8,21 @@ const passport = require('passport');
 const helmet = require("helmet");
 const csp = require("helmet-csp");
 const session = require('express-session');
+const rateLimit = require('express-rate-limit');
 
 const PORT = process.env.PORT || 8070;
 
 app.use(helmet());
+
+// Implement rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
+
+// Apply the rate limiter globally
+app.use(limiter);
 
 require('./utils/passport');
 

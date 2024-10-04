@@ -121,12 +121,10 @@ export default function InqView() {
   const getData = async (e) => {
     e.preventDefault();
 
-    const user = localStorage.getItem("userInfo");
-    const user1 = JSON.parse(user);
-    const user2 = user1 ? user1.id : "";
-
-    const nic1 = nic;
-    const url = "http://localhost:8070/inquiry/view2/";
+    
+    
+    // const nic1 = nic;
+    // const url="https://trabackend1223.herokuapp.com/inquiry/view/";
 
     // const res = await axios
     //   .get(url + nic1)
@@ -140,6 +138,14 @@ export default function InqView() {
     // how to remove {} from above {"$ne":null}
 
     // const new1 = { $ne: null };
+
+    const user = localStorage.getItem("userInfo");
+    const user1 = JSON.parse(user);
+    const user2 = user1 ? user1.userId : "";
+
+    const nic1 = nic;
+    const url = "http://localhost:8070/inquiry/view2/";
+
 
     const res = await axios
       .post(url, { nic: nic1, userId: user2 })

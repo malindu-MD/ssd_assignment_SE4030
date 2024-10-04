@@ -247,7 +247,7 @@ export default class CreateInquiry extends Component {
   componentDidMount() {
     const user = localStorage.getItem("userInfo");
     const user1 = JSON.parse(user);
-    const user2 = user1 ? user1.id : ""; // Default to an empty string if user1 is not defined
+    const user2 = user1 ? user1.userId : ""; // Default to an empty string if user1 is not defined
 
     console.log(user2, "ssssss");
     this.setState({
@@ -287,7 +287,8 @@ export default class CreateInquiry extends Component {
       axios.post("http://localhost:8070/inquiry/add", data).then((res) => {
         if (res.data.success) {
           alert("You Have Successfully Created an Inquiry");
-
+          window.location.replace("/add");
+          
           this.setState({
             name: "",
             nic: "",

@@ -17,7 +17,7 @@ app.use(helmet());
 // Implement rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // Limit each IP to 100 requests per windowMs
+  max: 100, // Limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
 });
 
@@ -29,19 +29,29 @@ require('./utils/passport');
 app.use(
   csp({
     directives: {
-      defaultSrc: ["'self'", "localhost:3000"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "localhost:3000"],
-      styleSrc: ["'self'", "localhost:3000"],
+      defaultSrc: ["'self'", "localhost:3000"], // Allow default content only from the same origin and localhost
+      scriptSrc: ["'self'", "'unsafe-inline'", "localhost:3000"],// Allow scripts from self, inline JS (unsafe), and localhost
+      styleSrc: ["'self'", "localhost:3000"],  // Allow styles from self and localhost
     },
   })
 );
+
+app.post('/csp-violation-report', (req, res) => {
+  console.log('CSP Violation:', req.body);
+  res.status(204).send();
+});
 
 app.use((req, res, next) => {
   res.setHeader("X-Frame-Options", "SAMEORIGIN");
   next();
 });
 
-app.use(cors());
+// Allow requests from React frontend
+app.use(cors({
+  origin: 'http://localhost:3000',  // Allow requests only from React app
+  methods: 'GET,POST,PUT,DELETE'
+}));
+
 app.use(bodyParser.json());
 
 const URL = process.env.MONGODB_URL;

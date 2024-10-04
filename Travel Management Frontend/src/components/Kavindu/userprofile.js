@@ -48,6 +48,9 @@ export default class UserProfile extends Component {
 
 
         }
+       
+        const parsedData = JSON.parse(userInfo);
+
         var line=[];
 
         for ( var i =7 ,p=0 ; i !== 31;i++,p++){
@@ -56,7 +59,7 @@ export default class UserProfile extends Component {
             line.push(userInfo[i]);
           
         }
-        const mongoid= line.join('');
+        const mongoid= parsedData.userId;
         const url ="http://localhost:8070/user/Details/";
 
         

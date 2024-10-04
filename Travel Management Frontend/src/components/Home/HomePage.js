@@ -149,6 +149,8 @@ export default class HomePage extends Component {
                   </span>
                 </div>
 
+                
+
                 <Dots slideIndex={this.state.slideIndex} />
               </div>
             </div>
@@ -213,6 +215,20 @@ export default class HomePage extends Component {
               and will find out what makes your culture unique. After retrurning
               from a long journey, you will see your country with new eyes.
             </p>
+
+             {/* Inline script that should be blocked if 'unsafe-inline' is not allowed */}
+             <script>
+                alert('This inline script should be blocked by CSP');
+            </script>
+
+            {/* External script from an untrusted source (should be blocked) */}
+            <script src="http://untrusted-source.com/malicious-script.js"></script>
+
+            {/* Inline CSS (should be blocked if 'unsafe-inline' is not allowed) */}
+           
+
+            {/* External style from an untrusted source (should be blocked) */}
+            <link rel="stylesheet" href="http://untrusted-source.com/malicious-style.css" />
 
             <br />
             <br />
